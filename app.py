@@ -3,6 +3,7 @@ import requests
 import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
+import plotly
 from bokeh.plotting import figure, output_file, show, output_notebook
 from bokeh.embed import components
 from flask import Flask, render_template, request, redirect
@@ -26,11 +27,37 @@ def index():
         df = pd.DataFrame(columns=[c['name'] for c in res['columns']], data=res['data']).drop(columns='ticker')
         df['date'] = pd.to_datetime(df['date'])
         df = df.set_index('date')
-        x = df.index.values
+        x = df.index.values.astype(str)
         y = df['close']
-        p = figure(x_axis_label='Date', y_axis_label='Closing Price', x_axis_type="datetime")
-        p.line(x, y, line_width=2)
-        script, div = components(p)
+        y_high = df['high']
+        div = plotly.offline.plot(
+            {
+                'data': [
+                    {'x': x, 'y': y, 'name': 'close'},
+                ],
+                'layout': {
+                    'title': ticker,
+                    'xaxis': {
+                        'title': 'Date',
+                        'showgrid': False,
+                        'showline': True,
+                        'linecolor': 'black',
+                        'linewidth': 2,
+                        'mirror': True
+                    },
+                    'yaxis': {
+                        'title': 'Closing Price',
+                        'showgrid': False,
+                        'showline': True,
+                        'linecolor': 'black',
+                        'linewidth': 2,
+                        'mirror': True
+                    },
+                }
+            }, output_type='div', include_plotlyjs=False)
+        #p = figure(x_axis_label='Date', y_axis_label='Closing Price', x_axis_type="datetime")
+        #p.line(x, y, line_width=2)
+        #script, div = components(p)
     return render_template('index.html', script=script, div=div, ticker=ticker)
 
 @app.route('/about')
@@ -39,4 +66,4 @@ def about():
 
 
 if __name__ == '__main__':
-    app.run(port=33507)
+    app.run(port=5000)
