@@ -10,6 +10,7 @@ from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
 
+symbols_url = 'https://api.iextrading.com/1.0/ref-data/symbols'
 chart_url = 'https://api.iextrading.com/1.0/stock/{ticker}/chart/5y'
 company_url = 'https://api.iextrading.com/1.0/stock/{ticker}/company'
 logo_url = 'https://api.iextrading.com/1.0/stock/{ticker}/logo'
@@ -23,6 +24,7 @@ def index():
     company = ''
     logo = ''
     news = []
+    
     if request.method == 'POST':
         today = datetime.today()
         ticker = request.form.get('ticker')
