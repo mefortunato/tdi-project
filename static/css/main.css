@@ -1,3 +1,11 @@
 .container {
   font-family: 'Roboto Slab', serif;
 }
+
+.form-inline > * {
+  margin: 2px;
+}
+
+#intro-text {
+  margin: 25px 0;
+}

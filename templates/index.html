@@ -54,24 +54,51 @@
         </div>
       </nav>
       
-      <div class="jumbotron jumbotron-fluid" style="background: #fff">
-        <div class="container">
+      <div class="row">
+        <div id="intro-text" class="col-12">
           <h1 class="display-4">Historical Stock Prices</h1>
-          <p class="lead">This is an example application built using the <a href="http://flask.pocoo.org/" target="_blank">Flask</a> Python microframework. Enter a stock ticker symbol below to see historical closing prices. The data is queried from the <a href="https://www.quandl.com" target="_blank">Quandl Financial Data API</a>, converted into a <a href="https://pandas.pydata.org/" target="_blank">Pandas DataFrame</a>, and an interactive plot is created using <a href="https://plot.ly/" target="_blank">Plotly</a>.</p>
+          <p class="lead">This is an example application built using the <a href="http://flask.pocoo.org/" target="_blank">Flask</a> Python microframework. Enter a stock ticker symbol below to see historical closing prices for the past 5 years. The data is queried from the <a href="https://iextrading.com/developer/" target="_blank">IEX Financial Data API</a>, converted into a <a href="https://pandas.pydata.org/" target="_blank">Pandas DataFrame</a>, and an interactive plot is created using <a href="https://plot.ly/" target="_blank">Plotly</a>.</p>
           <p class="lead">An alternative version of this web app was also created using the <a href="https://reactjs.org/" target="_blank">React</a> javascript framework and can be seen <a href="http://mef-tdi-react.herokuapp.com" target="_blank">here</a>.</p>
         </div>
       </div>
       
       <div class="row">
-        <div class="col-lg-12 text-center">
+        <div class="col-12 text-center">
           <form method="POST">
-            Ticker: <input name="ticker" type="text" value="{{ticker}}"/>
-            <input type="submit" value="Submit"/>
+            <div class="form-inline d-flex justify-content-center">
+              <label class="sr-only">Ticker: </label>
+              <input class="form-control" name="ticker" id="ticker" type="text" value="{{ticker}}" placeholder="Ticker"/>
+              <input class="btn btn-secondary" type="submit" value="Submit"/>
+            </div>
           </form>
         </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 text-center" style="margin-top: 15px">
+          <h2>
+            <img id="logo" src="{{logo}}"/>
+            <br>
+            {% if ticker %}
+              {{ticker}} - {{company}}
+            {% endif %}
+          </h2>
+        </div>
+      </div>
+      <div class="row">
         <div class="col-lg-12 text-center">
             <center>{{div|safe}}</center>
-            {{script|safe}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          {% if news %}
+            <h2>Recent News</h2>
+            <ul>
+              {% for n in news %}
+                <li><a href="{{n['url']}}" target="_blank">{{n['headline']}}</a></li>
+              {% endfor %}
+            </ul>
+          {% endif %}
         </div>
       </div>
     </div>
